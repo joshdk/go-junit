@@ -1,0 +1,114 @@
+package junit
+
+func Ingest(data []byte) ([]Suite, error) {
+	var (
+		suiteChan = make(chan Suite)
+		suites    []Suite
+	)
+
+	nodes, err := parse(data)
+	if err != nil {
+		return nil, err
+	}
+
+	go func() {
+		findSuites(nodes, suiteChan)
+		close(suiteChan)
+	}()
+
+	for suite := range suiteChan {
+		suites = append(suites, suite)
+	}
+
+	return suites, nil
+}
+
+// findSuites performs a depth-first search through the XML document, and
+// attempts to ingest any "testsuite" tags that are encountered.
+func findSuites(nodes []xmlNode, suites chan Suite) {
+	for _, node := range nodes {
+		switch node.XMLName.Local {
+		case "testsuite":
+			suites <- ingestSuite(node)
+		default:
+			findSuites(node.Nodes, suites)
+		}
+	}
+}
+
+func ingestSuite(root xmlNode) Suite {
+	suite := Suite{
+		Name: root.Attr("name"),
+	}
+
+	for _, node := range root.Nodes {
+		switch node.XMLName.Local {
+		case "testcase":
+			testcase := ingestTestcase(node)
+			suite.Tests = append(suite.Tests, testcase)
+		case "properties":
+			props := ingestProperties(node)
+			suite.Properties = props
+		case "system-out":
+			suite.SystemOut = string(node.Content)
+		case "system-err":
+			suite.SystemErr = string(node.Content)
+		}
+	}
+
+	return suite
+}
+
+func ingestProperties(root xmlNode) map[string]string {
+	props := make(map[string]string, len(root.Nodes))
+
+	for _, node := range root.Nodes {
+
+		switch node.XMLName.Local {
+		case "property":
+			name := node.Attr("name")
+			value := node.Attr("value")
+			props[name] = value
+		}
+	}
+
+	return props
+}
+
+func ingestTestcase(root xmlNode) Test {
+	test := Test{
+		Name:   root.Attr("name"),
+		Status: StatusPassed,
+	}
+
+	for _, node := range root.Nodes {
+		switch node.XMLName.Local {
+		case "skipped":
+			test.Status = StatusSkipped
+		case "failure":
+			test.Error = ingestFailure(node)
+			test.Status = StatusFailed
+		case "error":
+			test.Error = ingestError(node)
+			test.Status = StatusError
+		}
+	}
+
+	return test
+}
+
+func ingestError(root xmlNode) Error {
+	return Error{
+		Body:    string(root.Content),
+		Type:    root.Attr("type"),
+		Message: root.Attr("message"),
+	}
+}
+
+func ingestFailure(root xmlNode) Failure {
+	return Failure{
+		Body:    string(root.Content),
+		Type:    root.Attr("type"),
+		Message: root.Attr("message"),
+	}
+}
