@@ -27,11 +27,12 @@ const (
 )
 
 type Totals struct {
-	Tests     int           `json:"tests" yaml:"tests"`
-	Failures  int           `json:"failures" yaml:"failures"`
-	Errors    int           `json:"errors" yaml:"errors"`
-	Successes int           `json:"successes" yaml:"successes"`
-	Duration  time.Duration `json:"duration" yaml:"duration"`
+	Tests    int           `json:"tests" yaml:"tests"`
+	Passed   int           `json:"passed" yaml:"passed"`
+	Skipped  int           `json:"skipped" yaml:"skipped"`
+	Failed   int           `json:"failed" yaml:"failed"`
+	Error    int           `json:"error" yaml:"error"`
+	Duration time.Duration `json:"duration" yaml:"duration"`
 }
 
 type Suite struct {
@@ -43,11 +44,32 @@ type Suite struct {
 
 	Tests []Test `json:"tests,omitempty" yaml:"tests"`
 
-	Totals Totals `json:"totals" yaml:"totals"`
-
 	SystemOut string `json:"stdout,omitempty"`
 
 	SystemErr string `json:"stderr,omitempty"`
+
+	Totals Totals `json:"totals" yaml:"totals"`
+}
+
+// Aggregate calculates result sums across all tests.
+func (s *Suite) Aggregate() {
+	totals := Totals{Tests: len(s.Tests)}
+
+	for _, test := range s.Tests {
+		totals.Duration += test.Duration
+		switch test.Status {
+		case StatusPassed:
+			totals.Passed++
+		case StatusSkipped:
+			totals.Skipped++
+		case StatusFailed:
+			totals.Failed++
+		case StatusError:
+			totals.Error++
+		}
+	}
+
+	s.Totals = totals
 }
 
 type Test struct {
