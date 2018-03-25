@@ -5,29 +5,6 @@ import (
 	"time"
 )
 
-func Ingest(data []byte) ([]Suite, error) {
-	var (
-		suiteChan = make(chan Suite)
-		suites    []Suite
-	)
-
-	nodes, err := parse(data)
-	if err != nil {
-		return nil, err
-	}
-
-	go func() {
-		findSuites(nodes, suiteChan)
-		close(suiteChan)
-	}()
-
-	for suite := range suiteChan {
-		suites = append(suites, suite)
-	}
-
-	return suites, nil
-}
-
 // findSuites performs a depth-first search through the XML document, and
 // attempts to ingest any "testsuite" tags that are encountered.
 func findSuites(nodes []xmlNode, suites chan Suite) {
