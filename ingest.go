@@ -1,5 +1,10 @@
 package junit
 
+import (
+	"strconv"
+	"time"
+)
+
 func Ingest(data []byte) ([]Suite, error) {
 	var (
 		suiteChan = make(chan Suite)
@@ -38,7 +43,8 @@ func findSuites(nodes []xmlNode, suites chan Suite) {
 
 func ingestSuite(root xmlNode) Suite {
 	suite := Suite{
-		Name: root.Attr("name"),
+		Name:    root.Attr("name"),
+		Package: root.Attr("package"),
 	}
 
 	for _, node := range root.Nodes {
@@ -63,7 +69,6 @@ func ingestProperties(root xmlNode) map[string]string {
 	props := make(map[string]string, len(root.Nodes))
 
 	for _, node := range root.Nodes {
-
 		switch node.XMLName.Local {
 		case "property":
 			name := node.Attr("name")
@@ -77,8 +82,10 @@ func ingestProperties(root xmlNode) map[string]string {
 
 func ingestTestcase(root xmlNode) Test {
 	test := Test{
-		Name:   root.Attr("name"),
-		Status: StatusPassed,
+		Name:      root.Attr("name"),
+		Classname: root.Attr("classname"),
+		Duration:  duration(root.Attr("time")),
+		Status:    StatusPassed,
 	}
 
 	for _, node := range root.Nodes {
@@ -111,4 +118,18 @@ func ingestFailure(root xmlNode) Failure {
 		Type:    root.Attr("type"),
 		Message: root.Attr("message"),
 	}
+}
+
+func duration(t string) time.Duration {
+	// Check if there was a valid decimal value
+	if s, err := strconv.ParseFloat(t, 64); err == nil {
+		return time.Duration(s*1000) * time.Millisecond
+	}
+
+	// Check if there was a valid duration string
+	if d, err := time.ParseDuration(t); err == nil {
+		return d
+	}
+
+	return 0
 }
