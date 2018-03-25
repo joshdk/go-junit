@@ -39,6 +39,7 @@ func ingestSuite(root xmlNode) Suite {
 		}
 	}
 
+	suite.Aggregate()
 	return suite
 }
 
