@@ -58,7 +58,8 @@ type Test struct {
 	Duration time.Duration `json:"duration" yaml:"duration"`
 
 	Status status
-	Error  error
+
+	Error error
 }
 
 type Error struct {
@@ -70,17 +71,5 @@ type Error struct {
 }
 
 func (err Error) Error() string {
-	return err.Body
-}
-
-type Failure struct {
-	Message string `json:"message,omitempty" yaml:"message"`
-
-	Type string `json:"type,omitempty" yaml:"type"`
-
-	Body string `json:"body,omitempty" yaml:"body"`
-}
-
-func (err Failure) Error() string {
 	return err.Body
 }
