@@ -93,7 +93,7 @@ func ingestTestcase(root xmlNode) Test {
 		case "skipped":
 			test.Status = StatusSkipped
 		case "failure":
-			test.Error = ingestFailure(node)
+			test.Error = ingestError(node)
 			test.Status = StatusFailed
 		case "error":
 			test.Error = ingestError(node)
@@ -112,18 +112,10 @@ func ingestError(root xmlNode) Error {
 	}
 }
 
-func ingestFailure(root xmlNode) Failure {
-	return Failure{
-		Body:    string(root.Content),
-		Type:    root.Attr("type"),
-		Message: root.Attr("message"),
-	}
-}
-
 func duration(t string) time.Duration {
 	// Check if there was a valid decimal value
 	if s, err := strconv.ParseFloat(t, 64); err == nil {
-		return time.Duration(s*1000) * time.Millisecond
+		return time.Duration(s*1000000) * time.Microsecond
 	}
 
 	// Check if there was a valid duration string
