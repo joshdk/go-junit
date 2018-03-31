@@ -21,11 +21,22 @@ func (n *xmlNode) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 		return err
 	}
 
+	content, err := extractContent(n.Content)
+	if err != nil {
+		return err
+	}
+
+	n.Content = content
+
 	n.Attrs = attrMap(start.Attr)
 	return nil
 }
 
 func attrMap(attrs []xml.Attr) map[string]string {
+	if len(attrs) == 0 {
+		return nil
+	}
+
 	attributes := make(map[string]string, len(attrs))
 	for _, attr := range attrs {
 		attributes[attr.Name.Local] = attr.Value
