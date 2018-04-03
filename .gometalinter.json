@@ -1,0 +1,32 @@
+{
+  "Disable": [
+    "gosimple",
+    "lll",
+    "staticcheck",
+    "unused"
+  ],
+  "Enable": [
+    "deadcode",
+    "dupl",
+    "errcheck",
+    "gas",
+    "goconst",
+    "gocyclo",
+    "goimports",
+    "golint",
+    "gotype",
+    "gotypex",
+    "ineffassign",
+    "interfacer",
+    "maligned",
+    "megacheck",
+    "misspell",
+    "nakedret",
+    "safesql",
+    "structcheck",
+    "unconvert",
+    "unparam",
+    "varcheck",
+    "vet"
+  ]
+}

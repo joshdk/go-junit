@@ -7,4 +7,22 @@ jobs:
     working_directory: /go/src/github.com/joshdk/go-junit
     steps:
       - checkout
-      - run: gofmt -l -s .
+      - run:
+          name: Install build tools
+          command: |
+            go get -u github.com/alecthomas/gometalinter
+            go get -u github.com/jstemmer/go-junit-report
+            gometalinter --install
+            mkdir test-results
+      - run:
+          name: Lint Go code
+          command: gometalinter
+      - run:
+          name: Test Go code
+          command: go test -v 2>&1 | tee test-results/report.log
+      - run:
+          name: Generate test report
+          command: cat test-results/report.log | go-junit-report -go-version $GOLANG_VERSION > test-results/report.xml
+          when: always
+      - store_test_results:
+          path: test-results
