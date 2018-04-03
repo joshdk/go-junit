@@ -1,11 +1,177 @@
 package junit
 
 import (
+	"encoding/xml"
 	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
+
+func TestReparent(t *testing.T) {
+	tests := []struct {
+		title    string
+		input    []byte
+		expected string
+	}{
+		{
+			title:    "nil input",
+			expected: "<fake-root></fake-root>",
+		},
+		{
+			title:    "empty input",
+			input:    []byte(""),
+			expected: "<fake-root></fake-root>",
+		},
+		{
+			title:    "xml input",
+			input:    []byte(`<testcase name="unit tests" />`),
+			expected: `<fake-root><testcase name="unit tests" /></fake-root>`,
+		},
+	}
+
+	for index, test := range tests {
+		name := fmt.Sprintf("#%d - %s", index+1, test.title)
+
+		t.Run(name, func(t *testing.T) {
+			actual := reparentXML(test.input)
+
+			assert.Equal(t, test.expected, string(actual))
+		})
+	}
+}
+
+func TestParse(t *testing.T) {
+	tests := []struct {
+		title    string
+		input    []byte
+		expected []xmlNode
+	}{
+		{
+			title: "nil input",
+		},
+		{
+			title: "empty input",
+			input: []byte(``),
+		},
+		{
+			title: "plaintext input",
+			input: []byte(`This is some data that does not look like xml.`),
+		},
+		{
+			title: "json input",
+			input: []byte(`{"This is some data": "that looks like json"}`),
+		},
+		{
+			title: "single xml node",
+			input: []byte(`<this-is-a-tag/>`),
+			expected: []xmlNode{
+				{
+					XMLName: xml.Name{
+						Local: "this-is-a-tag",
+					},
+				},
+			},
+		},
+		{
+			title: "multiple xml nodes",
+			input: []byte(`
+				<this-is-a-tag/>
+				<this-is-also-a-tag/>
+			`),
+			expected: []xmlNode{
+				{
+					XMLName: xml.Name{
+						Local: "this-is-a-tag",
+					},
+				},
+				{
+					XMLName: xml.Name{
+						Local: "this-is-also-a-tag",
+					},
+				},
+			},
+		},
+		{
+			title: "single xml node with content",
+			input: []byte(`<this-is-a-tag>This is some content.</this-is-a-tag>`),
+			expected: []xmlNode{
+				{
+					XMLName: xml.Name{
+						Local: "this-is-a-tag",
+					},
+					Content: []byte("This is some content."),
+				},
+			},
+		},
+		{
+			title: "single xml node with encoded content",
+			input: []byte(`<this-is-a-tag>&lt;sender&gt;John Smith&lt;/sender&gt;</this-is-a-tag>`),
+			expected: []xmlNode{
+				{
+					XMLName: xml.Name{
+						Local: "this-is-a-tag",
+					},
+					Content: []byte("<sender>John Smith</sender>"),
+				},
+			},
+		},
+		{
+			title: "single xml node with cdata content",
+			input: []byte(`<this-is-a-tag><![CDATA[<sender>John Smith</sender>]]></this-is-a-tag>`),
+			expected: []xmlNode{
+				{
+					XMLName: xml.Name{
+						Local: "this-is-a-tag",
+					},
+					Content: []byte("<sender>John Smith</sender>"),
+				},
+			},
+		},
+		{
+			title: "single xml node with attributes",
+			input: []byte(`<this-is-a-tag name="my name" status="passed"></this-is-a-tag>`),
+			expected: []xmlNode{
+				{
+					XMLName: xml.Name{
+						Local: "this-is-a-tag",
+					},
+					Attrs: map[string]string{
+						"name":   "my name",
+						"status": "passed",
+					},
+				},
+			},
+		},
+		{
+			title: "single xml node with encoded attributes",
+			input: []byte(`<this-is-a-tag name="&lt;sender&gt;John Smith&lt;/sender&gt;"></this-is-a-tag>`),
+			expected: []xmlNode{
+				{
+					XMLName: xml.Name{
+						Local: "this-is-a-tag",
+					},
+					Attrs: map[string]string{
+						"name": "<sender>John Smith</sender>",
+					},
+				},
+			},
+		},
+	}
+
+	for index, test := range tests {
+		name := fmt.Sprintf("#%d - %s", index+1, test.title)
+
+		t.Run(name, func(t *testing.T) {
+			actual, err := parse(test.input)
+
+			require.Nil(t, err)
+
+			assert.Equal(t, test.expected, actual)
+		})
+	}
+}
 
 func TestExtract(t *testing.T) {
 	tests := []struct {
