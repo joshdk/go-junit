@@ -4,26 +4,26 @@ import (
 	"time"
 )
 
-type status string
+type Status string
 
 const (
 	// StatusPassed represents a JUnit testcase that was run, and did not
 	// result in an error or a failure.
-	StatusPassed status = "passed"
+	StatusPassed Status = "passed"
 
 	// StatusSkipped represents a JUnit testcase that was intentionally
 	// skipped.
-	StatusSkipped status = "skipped"
+	StatusSkipped Status = "skipped"
 
 	// StatusFailed represents a JUnit testcase that was run, but resulted in
 	// a failure. Failures are violations of declared test expectations,
 	// such as a failed assertion.
-	StatusFailed status = "failed"
+	StatusFailed Status = "failed"
 
 	// StatusError represents a JUnit testcase that was run, but resulted in
 	// an error. Errors are unexpected violations of the test itself, such as
 	// an uncaught exception.
-	StatusError status = "error"
+	StatusError Status = "error"
 )
 
 // Totals contains aggregated results across a set of test runs. Is usually
@@ -113,7 +113,7 @@ type Test struct {
 
 	// Status is the result of the test. Status values are passed, skipped,
 	// failure, & error.
-	Status status
+	Status Status
 
 	// Error is a record of the failure or error of a test, if applicable.
 	//
