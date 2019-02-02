@@ -1,15 +1,14 @@
 {
   "Disable": [
-    "gosimple",
-    "lll",
-    "staticcheck",
-    "unused"
+    "gosec",
+    "lll"
   ],
   "Enable": [
     "deadcode",
     "dupl",
     "errcheck",
-    "gas",
+    "gochecknoglobals",
+    "gochecknoinits",
     "goconst",
     "gocyclo",
     "goimports",
@@ -19,14 +18,13 @@
     "ineffassign",
     "interfacer",
     "maligned",
-    "megacheck",
     "misspell",
     "nakedret",
     "safesql",
+    "staticcheck",
     "structcheck",
     "unconvert",
     "unparam",
-    "varcheck",
-    "vet"
+    "varcheck"
   ]
 }

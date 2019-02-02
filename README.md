@@ -1,9 +1,9 @@
-[![License](https://img.shields.io/github/license/joshdk/go-junit.svg)](https://opensource.org/licenses/MIT)
-[![GoDoc](https://godoc.org/github.com/joshdk/go-junit?status.svg)](https://godoc.org/github.com/joshdk/go-junit)
-[![Go Report Card](https://goreportcard.com/badge/github.com/joshdk/go-junit)](https://goreportcard.com/report/github.com/joshdk/go-junit)
-[![CircleCI](https://circleci.com/gh/joshdk/go-junit.svg?&style=shield)](https://circleci.com/gh/joshdk/go-junit/tree/master)
+[![License][license-badge]][license-link]
+[![Godoc][godoc-badge]][godoc-link]
+[![Go Report Card][go-report-badge]][go-report-link]
+[![CircleCI][circleci-badge]][circleci-link]
 
-# Go Junit
+# Go JUnit
 
 🐜 Go library for ingesting JUnit XML reports
 
@@ -51,7 +51,7 @@ if err != nil {
 }
 ```
 
-You can then inspect the contents of the ingestes suites.
+You can then inspect the contents of the ingested suites.
 
 ```go
 for _, suite := range suites {
@@ -157,4 +157,14 @@ In all cases, omitting (or even duplicated) the XML declaration tag is allowed.
 
 ## License
 
-This library is distributed under the [MIT License](https://opensource.org/licenses/MIT), see [LICENSE.txt](https://github.com/joshdk/go-junit/blob/master/LICENSE.txt) for more information.
+This code is distributed under the [MIT License][license-link], see [LICENSE.txt][license-file] for more information.
+
+[circleci-badge]:   https://circleci.com/gh/joshdk/go-junit.svg?&style=shield
+[circleci-link]:    https://circleci.com/gh/joshdk/go-junit/tree/master
+[go-report-badge]:  https://goreportcard.com/badge/github.com/joshdk/go-junit
+[go-report-link]:   https://goreportcard.com/report/github.com/joshdk/go-junit
+[godoc-badge]:      https://godoc.org/github.com/joshdk/go-junit?status.svg
+[godoc-link]:       https://godoc.org/github.com/joshdk/go-junit
+[license-badge]:    https://img.shields.io/badge/license-MIT-green.svg
+[license-file]:     https://github.com/joshdk/go-junit/blob/master/LICENSE.txt
+[license-link]:     https://opensource.org/licenses/MIT
