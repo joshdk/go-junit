@@ -4,6 +4,8 @@ import (
 	"time"
 )
 
+// Status represents the result of a single a JUnit testcase. Indicates if a
+// testcase was run, and if it was successful.
 type Status string
 
 const (
