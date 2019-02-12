@@ -119,14 +119,14 @@ type Test struct {
 
 	// Status is the result of the test. Status values are passed, skipped,
 	// failure, & error.
-	Status Status
+	Status Status `json:"status" yaml:"status"`
 
 	// Error is a record of the failure or error of a test, if applicable.
 	//
 	// The following relations should hold true.
 	//   Error == nil && (Status == Passed || Status == Skipped)
 	//   Error != nil && (Status == Failed || Status == Error)
-	Error error
+	Error error `json:"error" yaml:"error"`
 }
 
 // Error represents an erroneous test result.
