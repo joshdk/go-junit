@@ -68,18 +68,18 @@ type Suite struct {
 
 	// Properties is a mapping of key-value pairs that were available when the
 	// tests were run.
-	Properties map[string]string `json:"properties,omitempty" yaml:"properties"`
+	Properties map[string]string `json:"properties,omitempty" yaml:"properties,omitempty"`
 
 	// Tests is an ordered collection of tests with associated results.
-	Tests []Test `json:"tests,omitempty" yaml:"tests"`
+	Tests []Test `json:"tests,omitempty" yaml:"tests,omitempty"`
 
 	// SystemOut is textual test output for the suite. Usually output that is
 	// written to stdout.
-	SystemOut string `json:"stdout,omitempty"`
+	SystemOut string `json:"stdout,omitempty" yaml:"stdout,omitempty"`
 
 	// SystemErr is textual test error output for the suite. Usually output that is
 	// written to stderr.
-	SystemErr string `json:"stderr,omitempty"`
+	SystemErr string `json:"stderr,omitempty" yaml:"stderr,omitempty"`
 
 	// Totals is the aggregated results of all tests.
 	Totals Totals `json:"totals" yaml:"totals"`
@@ -133,15 +133,15 @@ type Test struct {
 type Error struct {
 	// Message is a descriptor given to the error. Purpose and values differ by
 	// environment.
-	Message string `json:"message,omitempty" yaml:"message"`
+	Message string `json:"message,omitempty" yaml:"message,omitempty"`
 
 	// Type is a descriptor given to the error. Purpose and values differ by
 	// framework. Value is typically an exception class, such as an assertion.
-	Type string `json:"type,omitempty" yaml:"type"`
+	Type string `json:"type,omitempty" yaml:"type,omitempty"`
 
 	// Body is extended text for the error. Purpose and values differ by
 	// framework. Value is typically a stacktrace.
-	Body string `json:"body,omitempty" yaml:"body"`
+	Body string `json:"body,omitempty" yaml:"body,omitempty"`
 }
 
 // Error returns a textual description of the test error.
