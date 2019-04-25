@@ -64,10 +64,11 @@ func ingestProperties(root xmlNode) map[string]string {
 
 func ingestTestcase(root xmlNode) Test {
 	test := Test{
-		Name:      root.Attr("name"),
-		Classname: root.Attr("classname"),
-		Duration:  duration(root.Attr("time")),
-		Status:    StatusPassed,
+		Name:       root.Attr("name"),
+		Classname:  root.Attr("classname"),
+		Duration:   duration(root.Attr("time")),
+		Status:     StatusPassed,
+		Properties: root.Attrs,
 	}
 
 	for _, node := range root.Nodes {
