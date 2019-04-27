@@ -130,7 +130,7 @@ type Test struct {
 
 	// Additional properties from XML node attributes.
 	// Some tools use them to store additional information about test location.
-	Properties map[string]string
+	Properties map[string]string `json:"properties" yaml:"properties"`
 }
 
 // Error represents an erroneous test result.
