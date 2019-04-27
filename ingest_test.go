@@ -5,51 +5,39 @@
 package junit
 
 import (
-	"encoding/json"
 	"fmt"
-	"strings"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestInjest(t *testing.T) {
 	tests := []struct {
 		title    string
 		input    []byte
-		expected string
+		expected []Suite
 	}{
 		{
 			title: "xml input",
 			input: []byte(`<testsuite errors="0" failures="1" file="Foo.java"><testcase name="unit tests" file="Foo.java"/></testsuite>`),
-			expected: `
-[
-  {
-    "name": "",
-    "package": "",
-    "tests": [
-      {
-        "name": "unit tests",
-        "classname": "",
-        "duration": 0,
-        "status": "passed",
-        "error": null,
-        "Properties": {
-          "file": "Foo.java",
-          "name": "unit tests"
-        }
-      }
-    ],
-    "totals": {
-      "tests": 1,
-      "passed": 1,
-      "skipped": 0,
-      "failed": 0,
-      "error": 0,
-      "duration": 0
-    }
-  }
-]`,
+			expected: []Suite{
+				{
+					Tests: []Test{
+						{
+							Name:   "unit tests",
+							Status: "passed",
+							Properties: map[string]string{
+								"file": "Foo.java",
+								"name": "unit tests",
+							},
+						},
+					},
+					Totals: Totals{
+						Tests:  1,
+						Passed: 1,
+					},
+				},
+			},
 		},
 	}
 
@@ -58,18 +46,9 @@ func TestInjest(t *testing.T) {
 
 		t.Run(name, func(t *testing.T) {
 			actual, err := Ingest(test.input)
-			if err != nil {
-				t.Fatal(err)
-			}
-			if actual == nil {
-				t.Fatalf("No suites found!")
-			}
-
-			actualJSON, err := json.MarshalIndent(actual, "", "  ")
-			if err != nil {
-				t.Fatal(err)
-			}
-			assert.Equal(t, strings.TrimSpace(test.expected), string(actualJSON))
+			require.Nil(t, err)
+			require.NotEmpty(t, actual)
+			require.Equal(t, test.expected, actual)
 		})
 	}
 }
