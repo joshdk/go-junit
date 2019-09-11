@@ -2,12 +2,15 @@ version: 2.1
 jobs:
   lint:
     docker:
-      - image: circleci/golang:1.11.5
+      - image: circleci/golang:1.12.9
     working_directory: /go/src/github.com/joshdk/go-junit
+    environment:
+      GO111MODULE: "on"
     steps:
       - checkout
       - run:
           name: Install tools
+          working_directory: /tmp
           command: go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
       - run:
           name: Lint Go code
@@ -15,12 +18,15 @@ jobs:
 
   test:
     docker:
-    - image: circleci/golang:1.11.5
+    - image: circleci/golang:1.12.9
     working_directory: /go/src/github.com/joshdk/go-junit
+    environment:
+      GO111MODULE: "on"
     steps:
     - checkout
     - run:
         name: Install tools
+        working_directory: /tmp
         command: go get -u github.com/jstemmer/go-junit-report
     - run:
         name: Test Go code
