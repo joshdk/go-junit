@@ -1,5 +1,18 @@
 version: 2.1
 jobs:
+  lint:
+    docker:
+      - image: circleci/golang:1.11.5
+    working_directory: /go/src/github.com/joshdk/go-junit
+    steps:
+      - checkout
+      - run:
+          name: Install tools
+          command: go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
+      - run:
+          name: Lint Go code
+          command: golangci-lint run
+
   test:
     docker:
     - image: circleci/golang:1.11.5
@@ -7,18 +20,13 @@ jobs:
     steps:
     - checkout
     - run:
-        name: Install build tools
-        command: |
-          go get -u github.com/alecthomas/gometalinter
-          go get -u github.com/jstemmer/go-junit-report
-          gometalinter --install
-          mkdir test-results
-    - run:
-        name: Lint Go code
-        command: gometalinter --vendor
+        name: Install tools
+        command: go get -u github.com/jstemmer/go-junit-report
     - run:
         name: Test Go code
-        command: go test -v 2>&1 | tee test-results/report.log
+        command: |
+          mkdir -p test-results
+          go test -v 2>&1 | tee test-results/report.log
     - run:
         name: Generate test report
         command: cat test-results/report.log | go-junit-report -go-version $GOLANG_VERSION > test-results/report.xml
@@ -30,4 +38,5 @@ workflows:
   version: 2
   build:
     jobs:
+    - lint
     - test
