@@ -1,0 +1,12 @@
+linters:
+  enable-all: true
+  disable:
+  - lll
+
+issues:
+  exclude:
+  # Triggered by table tests calling t.Run. See
+  # https://github.com/kyoh86/scopelint/issues/4 for more information.
+  - Using the variable on range scope `test` in function literal
+  # Triggered by long table tests.
+  - Function 'Test\w+' is too long

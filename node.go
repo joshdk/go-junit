@@ -4,9 +4,7 @@
 
 package junit
 
-import (
-	"encoding/xml"
-)
+import "encoding/xml"
 
 type xmlNode struct {
 	XMLName xml.Name

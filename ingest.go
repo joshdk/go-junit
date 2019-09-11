@@ -51,8 +51,7 @@ func ingestProperties(root xmlNode) map[string]string {
 	props := make(map[string]string, len(root.Nodes))
 
 	for _, node := range root.Nodes {
-		switch node.XMLName.Local {
-		case "property":
+		if node.XMLName.Local == "property" {
 			name := node.Attr("name")
 			value := node.Attr("value")
 			props[name] = value

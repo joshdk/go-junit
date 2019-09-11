@@ -89,7 +89,6 @@ func extractContent(data []byte) ([]byte, error) {
 			data = data[3:]
 			mode = 0
 		}
-
 	}
 
 	return output, nil
