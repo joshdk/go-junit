@@ -80,6 +80,10 @@ func ingestTestcase(root xmlNode) Test {
 		case "error":
 			test.Error = ingestError(node)
 			test.Status = StatusError
+		case "system-out":
+			test.SystemOut = string(node.Content)
+		case "system-err":
+			test.SystemErr = string(node.Content)
 		}
 	}
 
