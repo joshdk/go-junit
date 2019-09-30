@@ -19,7 +19,12 @@ func TestIngest(t *testing.T) {
 	}{
 		{
 			title: "xml input",
-			input: []byte(`<testsuite errors="0" failures="1" file="Foo.java"><testcase name="unit tests" file="Foo.java"><system-out><![CDATA[Hello, World]]></system-out></testcase></testsuite>`),
+			input: []byte(`<testsuite errors="0" failures="1" file="Foo.java">
+				<testcase name="unit tests" file="Foo.java">
+					<system-out><![CDATA[Hello, World]]></system-out>
+					<system-err><![CDATA[I'm an error!]]></system-err>
+				</testcase>
+			</testsuite>`),
 			expected: []Suite{
 				{
 					Tests: []Test{
@@ -31,6 +36,7 @@ func TestIngest(t *testing.T) {
 								"name": "unit tests",
 							},
 							SystemOut: "Hello, World",
+							SystemErr: "I'm an error!",
 						},
 					},
 					Totals: Totals{
