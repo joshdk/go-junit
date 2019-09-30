@@ -130,11 +130,11 @@ type Test struct {
 	// Some tools use them to store additional information about test location.
 	Properties map[string]string `json:"properties" yaml:"properties"`
 
-	// SystemOut is textual test output for the suite. Usually output that is
+	// SystemOut is textual output for the test case. Usually output that is
 	// written to stdout.
 	SystemOut string `json:"stdout,omitempty" yaml:"stdout,omitempty"`
 
-	// SystemErr is textual test error output for the suite. Usually output that is
+	// SystemErr is textual error output for the test case. Usually output that is
 	// written to stderr.
 	SystemErr string `json:"stderr,omitempty" yaml:"stderr,omitempty"`
 }
