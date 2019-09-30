@@ -4,39 +4,21 @@ jobs:
     docker:
       - image: circleci/golang:1.12.9
     working_directory: /go/src/github.com/joshdk/go-junit
-    environment:
-      GO111MODULE: "on"
     steps:
       - checkout
       - run:
-          name: Install tools
-          working_directory: /tmp
-          command: go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
-      - run:
           name: Lint Go code
-          command: golangci-lint run
+          command: make lint
 
   test:
     docker:
     - image: circleci/golang:1.12.9
     working_directory: /go/src/github.com/joshdk/go-junit
-    environment:
-      GO111MODULE: "on"
     steps:
     - checkout
     - run:
-        name: Install tools
-        working_directory: /tmp
-        command: go get -u github.com/jstemmer/go-junit-report
-    - run:
         name: Test Go code
-        command: |
-          mkdir -p test-results
-          go test -v 2>&1 | tee test-results/report.log
-    - run:
-        name: Generate test report
-        command: cat test-results/report.log | go-junit-report -go-version $GOLANG_VERSION > test-results/report.xml
-        when: always
+        command: make test
     - store_test_results:
         path: test-results
 
