@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestInjest(t *testing.T) {
+func TestIngest(t *testing.T) {
 	tests := []struct {
 		title    string
 		input    []byte
@@ -19,7 +19,12 @@ func TestInjest(t *testing.T) {
 	}{
 		{
 			title: "xml input",
-			input: []byte(`<testsuite errors="0" failures="1" file="Foo.java"><testcase name="unit tests" file="Foo.java"/></testsuite>`),
+			input: []byte(`<testsuite errors="0" failures="1" file="Foo.java">
+				<testcase name="unit tests" file="Foo.java">
+					<system-out><![CDATA[Hello, World]]></system-out>
+					<system-err><![CDATA[I'm an error!]]></system-err>
+				</testcase>
+			</testsuite>`),
 			expected: []Suite{
 				{
 					Tests: []Test{
@@ -30,6 +35,8 @@ func TestInjest(t *testing.T) {
 								"file": "Foo.java",
 								"name": "unit tests",
 							},
+							SystemOut: "Hello, World",
+							SystemErr: "I'm an error!",
 						},
 					},
 					Totals: Totals{
