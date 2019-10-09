@@ -19,7 +19,7 @@ go get -u github.com/joshdk/go-junit
 
 ### Data Ingestion
 
-This library has a number of ingestion methods for convenient.
+This library has a number of ingestion methods for convenience.
 
 The simplest of which parses raw JUnit XML data.
 
@@ -154,6 +154,16 @@ In all cases, omitting (or even duplicated) the XML declaration tag is allowed.
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 ```
+
+## Contributing
+
+Found a bug or want to make go-junit better? Please [open a pull request](https://github.com/joshdk/go-junit/compare)!
+
+To make things easier, try out the following:
+
+- Running `make test` will run the test suite to verify behavior.
+
+- Running `make lint` will format the code, and report any linting issues using [golangci/golangci-lint](https://github.com/golangci/golangci-lint).
 
 ## License
 
