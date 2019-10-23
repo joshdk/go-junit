@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- a description of the JUnit XML format and how Jenkins parses it. See also junit.xsd -->
+
+<!-- if only a single testsuite element is present, the testsuites
+     element can be omitted. All attributes are optional. -->
+<testsuites disabled=""
+            errors=""
+            failures=""
+            name=""
+            tests=""
+            time=""
+	    >
+
+  <!-- testsuite can appear multiple times, if contained in a testsuites element.
+       It can also be the root element. -->
+  <testsuite name=""
+	     tests=""
+	     disabled=""
+             errors=""
+             failures=""
+             hostname=""
+	     id=""
+	     package=""
+	     skipped=""
+	     time=""
+	     timestamp=""
+	     >
+
+    <!-- Properties (e.g., environment settings) set during test
+	 execution. The properties element can appear 0 or once. -->
+    <properties>
+      <!-- property can appear multiple times. The name and value attributres are required. -->
+      <property name="" value=""/>
+    </properties>
+
+    <!-- testcase can appear multiple times, see /testsuites/testsuite@tests -->
+    <testcase name=""
+	      assertions=""
+	      classname=""
+	      status=""
+	      time=""
+	      >
+
+      <!-- If the test was not executed or failed, you can specify one
+           the skipped, error or failure elements. -->
+
+      <!-- skipped can appear 0 or once. optional -->
+      <skipped message=""
+	  />
+
+      <!-- Indicates that the test errored. An errored test is one
+           that had an unanticipated problem. For example an unchecked
+           throwable or a problem with the implementation of the
+           test. Contains as a text node relevant data for the error,
+           for example a stack trace. optional -->
+      <error message=""
+	     type=""
+	     ></error>
+
+      <!-- Indicates that the test failed. A failure is a test which
+	   the code has explicitly failed by using the mechanisms for
+	   that purpose. For example via an assertEquals. Contains as
+	   a text node relevant data for the failure, e.g., a stack
+	   trace. optional -->
+      <failure message=""
+	       type=""
+	       ></failure>
+
+      <!-- Data that was written to standard out while the test was executed. optional -->
+      <system-out>STDOUT text</system-out>
+
+      <!-- Data that was written to standard error while the test was executed. optional -->
+      <system-err>STDERR text</system-err>
+    </testcase>
+
+    <!-- Data that was written to standard out while the test suite was executed. optional -->
+    <system-out>STDOUT text</system-out>
+    <!-- Data that was written to standard error while the test suite was executed. optional -->
+    <system-err>STDERR text</system-err>
+  </testsuite>
+</testsuites>
