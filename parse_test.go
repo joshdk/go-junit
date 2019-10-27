@@ -5,8 +5,10 @@
 package junit
 
 import (
+	"bytes"
 	"encoding/xml"
 	"fmt"
+	"io/ioutil"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -39,7 +41,9 @@ func TestReparent(t *testing.T) {
 		name := fmt.Sprintf("#%d - %s", index+1, test.title)
 
 		t.Run(name, func(t *testing.T) {
-			actual := reparentXML(test.input)
+			reader := reparentXML(bytes.NewReader(test.input))
+			actual, err := ioutil.ReadAll(reader)
+			assert.NoError(t, err)
 
 			assert.Equal(t, test.expected, string(actual))
 		})
@@ -168,8 +172,7 @@ func TestParse(t *testing.T) {
 		name := fmt.Sprintf("#%d - %s", index+1, test.title)
 
 		t.Run(name, func(t *testing.T) {
-			actual, err := parse(test.input)
-
+			actual, err := parse(bytes.NewReader(test.input))
 			require.Nil(t, err)
 
 			assert.Equal(t, test.expected, actual)
