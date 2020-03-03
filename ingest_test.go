@@ -132,8 +132,8 @@ func TestExamplesInTheWild(t *testing.T) {
 			},
 		},
 		{
-			title:    "Firabase example",
-			filename: "testdata/firebase.xml",
+			title:    "fastlane example",
+			filename: "testdata/fastlane-trainer.xml",
 			check: func(t *testing.T, suites []Suite) {
 				assert.Len(t, suites, 1)
 				assert.Len(t, suites[0].Tests, 4)
