@@ -4,7 +4,10 @@
 
 package junit
 
-import "time"
+import (
+	"strings"
+	"time"
+)
 
 // Status represents the result of a single a JUnit testcase. Indicates if a
 // testcase was run, and if it was successful.
@@ -156,5 +159,13 @@ type Error struct {
 
 // Error returns a textual description of the test error.
 func (err Error) Error() string {
+	errValues := [3]string{err.Body, err.Message, err.Type}
+
+	for _, str := range errValues {
+		if strings.TrimSpace(str) != "" {
+			return str
+		}
+	}
+
 	return err.Body
 }
