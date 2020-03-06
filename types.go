@@ -159,12 +159,16 @@ type Error struct {
 
 // Error returns a textual description of the test error.
 func (err Error) Error() string {
-	errValues := [3]string{err.Body, err.Message, err.Type}
+	if strings.TrimSpace(err.Body) != "" {
+		return err.Body
+	}
 
-	for _, str := range errValues {
-		if strings.TrimSpace(str) != "" {
-			return str
-		}
+	if strings.TrimSpace(err.Message) != "" {
+		return err.Message
+	}
+
+	if strings.TrimSpace(err.Type) != "" {
+		return err.Type
 	}
 
 	return err.Body
