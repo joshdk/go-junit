@@ -1,0 +1,16 @@
+#!/bin/sh
+set -eu
+
+platform="$(uname -s)"
+if [ "$platform" = Linux ]; then
+    prefix=golangci-lint-1.23.8-linux-amd64
+elif [ "$platform" = Darwin ]; then
+    prefix=golangci-lint-1.23.8-darwin-amd64
+fi
+
+cd "$(mktemp -d)" || exit 1
+wget -q "https://github.com/golangci/golangci-lint/releases/download/v1.23.8/${prefix}.tar.gz"
+tar -xf "${prefix}.tar.gz"
+mkdir -p "$(dirname "$1")"
+install "${prefix}/golangci-lint" "$1"
+rm -rf "$PWD"

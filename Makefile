@@ -23,7 +23,7 @@ $(go-junit-report):
 # Install binary for golangci-lint.
 golangci-lint := $(GOBIN)/golangci-lint
 $(golangci-lint):
-	cd /tmp && go get -u github.com/golangci/golangci-lint/cmd/golangci-lint@v1.18.0
+	@./scripts/install-golangci-lint $(golangci-lint)
 
 # Install binary for goimports.
 goimports := $(GOBIN)/goimports
