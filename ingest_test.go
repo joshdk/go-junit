@@ -131,6 +131,34 @@ func TestExamplesInTheWild(t *testing.T) {
 				assert.Equal(t, testcase, suites[0].Tests[0])
 			},
 		},
+		{
+			title:    "fastlane example",
+			filename: "testdata/fastlane-trainer.xml",
+			check: func(t *testing.T, suites []Suite) {
+				assert.Len(t, suites, 1)
+				assert.Len(t, suites[0].Tests, 4)
+
+				var testcase = Test{
+					Name:      "testSomething()",
+					Classname: "TestClassSample",
+					Duration:  342 * time.Millisecond,
+					Status:    StatusFailed,
+					Error: Error{
+						Message: "XCTAssertTrue failed",
+						Body:    "\n            ",
+					},
+					Properties: map[string]string{
+						"classname": "TestClassSample",
+						"name":      "testSomething()",
+						"time":      "0.342",
+					},
+				}
+
+				assert.Equal(t, testcase, suites[0].Tests[2])
+				assert.EqualError(t, suites[0].Tests[2].Error, "XCTAssertTrue failed")
+				assert.EqualError(t, suites[0].Tests[3].Error, "NullPointerException")
+			},
+		},
 	}
 
 	for index, test := range tests {

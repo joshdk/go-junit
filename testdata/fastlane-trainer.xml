@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="4" failures="2">
+    <testsuite name="UnitTests" tests="4" failures="2">
+        <testcase classname="TestClass" name="testName()" time="0.45252">
+        </testcase>
+        <testcase classname="TestClass" name="testLaunch1()" time="0.2542">
+        </testcase>
+        <testcase classname="TestClassSample" name="testSomething()" time="0.342">
+            <failure message="XCTAssertTrue failed">
+            </failure>
+        </testcase>
+        <testcase classname="TestClassSample" name="testSomething2()" time="0.441">
+            <failure type="NullPointerException">
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>
