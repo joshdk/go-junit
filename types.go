@@ -159,17 +159,14 @@ type Error struct {
 
 // Error returns a textual description of the test error.
 func (err Error) Error() string {
-	if strings.TrimSpace(err.Body) != "" {
+	switch {
+	case strings.TrimSpace(err.Body) != "":
 		return err.Body
-	}
 
-	if strings.TrimSpace(err.Message) != "" {
+	case strings.TrimSpace(err.Message) != "":
 		return err.Message
-	}
 
-	if strings.TrimSpace(err.Type) != "" {
+	default:
 		return err.Type
 	}
-
-	return err.Body
 }
