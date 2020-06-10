@@ -74,6 +74,9 @@ type Suite struct {
 	// Tests is an ordered collection of tests with associated results.
 	Tests []Test `json:"tests,omitempty" yaml:"tests,omitempty"`
 
+	// Suites is an ordered collection of suites with associated results.
+	Suites []Suite `json:"suites,omitempty" yaml:"suites,omitempty"`
+
 	// SystemOut is textual test output for the suite. Usually output that is
 	// written to stdout.
 	SystemOut string `json:"stdout,omitempty" yaml:"stdout,omitempty"`
@@ -102,6 +105,15 @@ func (s *Suite) Aggregate() {
 		case StatusError:
 			totals.Error++
 		}
+	}
+
+	for _, suite := range s.Suites {
+		suite.Aggregate()
+		totals.Duration += suite.Totals.Duration
+		totals.Passed += suite.Totals.Passed
+		totals.Skipped += suite.Totals.Skipped
+		totals.Failed += suite.Totals.Failed
+		totals.Error += suite.Totals.Error
 	}
 
 	s.Totals = totals

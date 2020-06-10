@@ -30,6 +30,9 @@ func ingestSuite(root xmlNode) Suite {
 
 	for _, node := range root.Nodes {
 		switch node.XMLName.Local {
+		case "testsuite":
+			testsuite := ingestSuite(node)
+			suite.Suites = append(suite.Suites, testsuite)
 		case "testcase":
 			testcase := ingestTestcase(node)
 			suite.Tests = append(suite.Tests, testcase)
