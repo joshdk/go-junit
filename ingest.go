@@ -24,8 +24,9 @@ func findSuites(nodes []xmlNode, suites chan Suite) {
 
 func ingestSuite(root xmlNode) Suite {
 	suite := Suite{
-		Name:    root.Attr("name"),
-		Package: root.Attr("package"),
+		Name:       root.Attr("name"),
+		Package:    root.Attr("package"),
+		Properties: root.Attrs,
 	}
 
 	for _, node := range root.Nodes {
