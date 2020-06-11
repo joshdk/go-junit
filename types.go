@@ -74,7 +74,7 @@ type Suite struct {
 	// Tests is an ordered collection of tests with associated results.
 	Tests []Test `json:"tests,omitempty" yaml:"tests,omitempty"`
 
-	// Suites is an ordered collection of suites with associated results.
+	// Suites is an ordered collection of suites with associated tests.
 	Suites []Suite `json:"suites,omitempty" yaml:"suites,omitempty"`
 
 	// SystemOut is textual test output for the suite. Usually output that is
