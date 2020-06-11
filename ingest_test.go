@@ -195,6 +195,19 @@ func TestExamplesInTheWild(t *testing.T) {
 				assert.Len(t, suite.Suites[1].Suites, 0)
 				assert.Len(t, suite.Suites[1].Tests, 3)
 				assert.Equal(t, "testC with data set #0", suite.Suites[1].Tests[0].Name)
+
+				// checking recursive aggregation
+				suites[0].Aggregate()
+				actualTotals := suites[0].Totals
+				expectedTotals := Totals{
+					Tests:    7,
+					Passed:   4,
+					Skipped:  0,
+					Failed:   3,
+					Error:    0,
+					Duration: 8489 * time.Microsecond,
+				}
+				assert.Equal(t, expectedTotals, actualTotals)
 			},
 		},
 	}

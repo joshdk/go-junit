@@ -89,7 +89,7 @@ type Suite struct {
 	Totals Totals `json:"totals" yaml:"totals"`
 }
 
-// Aggregate calculates result sums across all tests.
+// Aggregate calculates result sums across all tests and nested suites.
 func (s *Suite) Aggregate() {
 	totals := Totals{Tests: len(s.Tests)}
 
@@ -107,8 +107,10 @@ func (s *Suite) Aggregate() {
 		}
 	}
 
+	// just summing totals from nested suites
 	for _, suite := range s.Suites {
 		suite.Aggregate()
+		totals.Tests += suite.Totals.Tests
 		totals.Duration += suite.Totals.Duration
 		totals.Passed += suite.Totals.Passed
 		totals.Skipped += suite.Totals.Skipped
