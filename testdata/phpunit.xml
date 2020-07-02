@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+    <testsuite name="/untitled/tests" tests="7" assertions="7" errors="0" warnings="0" failures="3" skipped="0" time="0.008489">
+        <testsuite name="SampleTest" file="/untitled/tests/SampleTest.php" tests="7" assertions="7" errors="0" warnings="0" failures="3" skipped="0" time="0.008489">
+            <testcase name="testA" class="SampleTest" classname="SampleTest" file="/untitled/tests/SampleTest.php" line="7" assertions="1" time="0.005917"/>
+            <testsuite name="SampleTest::testB" tests="3" assertions="3" errors="0" warnings="0" failures="1" skipped="0" time="0.002378">
+                <testcase name="testB with data set &quot;bool&quot;" class="SampleTest" classname="SampleTest" file="/untitled/tests/SampleTest.php" line="16" assertions="1" time="0.002254">
+                    <failure type="PHPUnit\Framework\ExpectationFailedException">SampleTest::testB with data set "bool" (false)
+                        should be true
+                        Failed asserting that false matches expected true.
+
+                        /untitled/tests/SampleTest.php:18
+                    </failure>
+                </testcase>
+                <testcase name="testB with data set &quot;int&quot;" class="SampleTest" classname="SampleTest" file="/untitled/tests/SampleTest.php" line="16" assertions="1" time="0.000075"/>
+                <testcase name="testB with data set &quot;string&quot;" class="SampleTest" classname="SampleTest" file="/untitled/tests/SampleTest.php" line="16" assertions="1" time="0.000049"/>
+            </testsuite>
+            <testsuite name="SampleTest::testC" tests="3" assertions="3" errors="0" warnings="0" failures="2" skipped="0" time="0.000194">
+                <testcase name="testC with data set #0" class="SampleTest" classname="SampleTest" file="/untitled/tests/SampleTest.php" line="32" assertions="1" time="0.000060"/>
+                <testcase name="testC with data set #1" class="SampleTest" classname="SampleTest" file="/untitled/tests/SampleTest.php" line="32" assertions="1" time="0.000071">
+                    <failure type="PHPUnit\Framework\ExpectationFailedException">SampleTest::testC with data set #1 (0)
+                        should be true
+                        Failed asserting that 0 matches expected true.
+
+                        /untitled/tests/SampleTest.php:34
+                    </failure>
+                </testcase>
+                <testcase name="testC with data set #2" class="SampleTest" classname="SampleTest" file="/untitled/tests/SampleTest.php" line="32" assertions="1" time="0.000063">
+                    <failure type="PHPUnit\Framework\ExpectationFailedException">SampleTest::testC with data set #2 ('')
+                        should be true
+                        Failed asserting that '' matches expected true.
+
+                        /untitled/tests/SampleTest.php:34
+                    </failure>
+                </testcase>
+            </testsuite>
+        </testsuite>
+    </testsuite>
+</testsuites>

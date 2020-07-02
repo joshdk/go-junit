@@ -159,6 +159,57 @@ func TestExamplesInTheWild(t *testing.T) {
 				assert.EqualError(t, suites[0].Tests[3].Error, "NullPointerException")
 			},
 		},
+		{
+			title:    "phpunit example",
+			filename: "testdata/phpunit.xml",
+			check: func(t *testing.T, suites []Suite) {
+				assert.Len(t, suites, 1)
+				assert.Len(t, suites[0].Tests, 0)
+				assert.Len(t, suites[0].Suites, 1)
+
+				suite := suites[0].Suites[0]
+				assert.Len(t, suite.Tests, 1)
+				assert.Len(t, suite.Suites, 2)
+
+				assert.Equal(t, "SampleTest", suite.Name)
+				assert.Equal(t, "/untitled/tests/SampleTest.php", suite.Properties["file"])
+
+				var testcase = Test{
+					Name:      "testA",
+					Classname: "SampleTest",
+					Duration:  5917 * time.Microsecond,
+					Status:    StatusPassed,
+					Properties: map[string]string{
+						"assertions": "1",
+						"class":      "SampleTest",
+						"classname":  "SampleTest",
+						"file":       "/untitled/tests/SampleTest.php",
+						"line":       "7",
+						"name":       "testA",
+						"time":       "0.005917",
+					},
+				}
+
+				assert.Equal(t, testcase, suite.Tests[0])
+
+				assert.Len(t, suite.Suites[1].Suites, 0)
+				assert.Len(t, suite.Suites[1].Tests, 3)
+				assert.Equal(t, "testC with data set #0", suite.Suites[1].Tests[0].Name)
+
+				// checking recursive aggregation
+				suites[0].Aggregate()
+				actualTotals := suites[0].Totals
+				expectedTotals := Totals{
+					Tests:    7,
+					Passed:   4,
+					Skipped:  0,
+					Failed:   3,
+					Error:    0,
+					Duration: 8489 * time.Microsecond,
+				}
+				assert.Equal(t, expectedTotals, actualTotals)
+			},
+		},
 	}
 
 	for index, test := range tests {

@@ -24,12 +24,16 @@ func findSuites(nodes []xmlNode, suites chan Suite) {
 
 func ingestSuite(root xmlNode) Suite {
 	suite := Suite{
-		Name:    root.Attr("name"),
-		Package: root.Attr("package"),
+		Name:       root.Attr("name"),
+		Package:    root.Attr("package"),
+		Properties: root.Attrs,
 	}
 
 	for _, node := range root.Nodes {
 		switch node.XMLName.Local {
+		case "testsuite":
+			testsuite := ingestSuite(node)
+			suite.Suites = append(suite.Suites, testsuite)
 		case "testcase":
 			testcase := ingestTestcase(node)
 			suite.Tests = append(suite.Tests, testcase)
