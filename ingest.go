@@ -6,6 +6,7 @@ package junit
 
 import (
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -104,7 +105,7 @@ func ingestError(root xmlNode) Error {
 
 func duration(t string) time.Duration {
 	// Check if there was a valid decimal value
-	if s, err := strconv.ParseFloat(t, 64); err == nil {
+	if s, err := strconv.ParseFloat(strings.ReplaceAll(t, ",", ""), 64); err == nil {
 		return time.Duration(s*1000000) * time.Microsecond
 	}
 
