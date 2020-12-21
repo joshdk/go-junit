@@ -113,7 +113,7 @@ func TestExamplesInTheWild(t *testing.T) {
 				var testcase = Test{
 					Name:      "testStdoutStderr",
 					Classname: "com.example.FooTest",
-					Duration:  9 * time.Millisecond,
+					Duration:  1234560 * time.Millisecond,
 					Status:    StatusFailed,
 					Error: Error{
 						Type: "java.lang.AssertionError",
@@ -122,7 +122,7 @@ func TestExamplesInTheWild(t *testing.T) {
 					Properties: map[string]string{
 						"classname": "com.example.FooTest",
 						"name":      "testStdoutStderr",
-						"time":      "0.009",
+						"time":      "1,234.56",
 					},
 					SystemOut: "Hello, World\n",
 					SystemErr: "I'm an error!\n",

@@ -47,7 +47,7 @@
     <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
     <property name="java.class.version" value="55.0"/>
   </properties>
-  <testcase name="testStdoutStderr" classname="com.example.FooTest" time="0.009">
+  <testcase name="testStdoutStderr" classname="com.example.FooTest" time="1,234.56">
     <failure type="java.lang.AssertionError">java.lang.AssertionError
 	at com.example.FooTest.testStdoutStderr(FooTest.java:13)
 </failure>
