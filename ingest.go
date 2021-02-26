@@ -79,12 +79,15 @@ func ingestTestcase(root xmlNode) Test {
 		switch node.XMLName.Local {
 		case "skipped":
 			test.Status = StatusSkipped
+			test.Message = node.Attr("message")
 		case "failure":
-			test.Error = ingestError(node)
 			test.Status = StatusFailed
-		case "error":
+			test.Message = node.Attr("message")
 			test.Error = ingestError(node)
+		case "error":
 			test.Status = StatusError
+			test.Message = node.Attr("message")
+			test.Error = ingestError(node)
 		case "system-out":
 			test.SystemOut = string(node.Content)
 		case "system-err":

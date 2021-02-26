@@ -136,6 +136,10 @@ type Test struct {
 	// failure, & error.
 	Status Status `json:"status" yaml:"status"`
 
+	// Message is an textual description optionally included with a skipped,
+	// failure, or error test case.
+	Message string `json:"message" yaml:"message"`
+
 	// Error is a record of the failure or error of a test, if applicable.
 	//
 	// The following relations should hold true.

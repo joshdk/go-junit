@@ -58,6 +58,18 @@ func TestExamplesInTheWild(t *testing.T) {
 			},
 		},
 		{
+			title:    "go-junit-report skipped example",
+			filename: "testdata/go-junit-report-skipped.xml",
+			origin:   "https://github.com/jstemmer/go-junit-report/blob/master/testdata/03-report.xml",
+			check: func(t *testing.T, suites []Suite) {
+				assert.Len(t, suites, 1)
+				assert.Len(t, suites[0].Tests, 2)
+				assert.Equal(t, "package/name", suites[0].Name)
+				assert.Equal(t, "TestOne", suites[0].Tests[0].Name)
+				assert.Equal(t, "file_test.go:11: Skip message", suites[0].Tests[0].Message)
+			},
+		},
+		{
 			title:    "ibm example",
 			filename: "testdata/ibm.xml",
 			origin:   "https://www.ibm.com/support/knowledgecenter/en/SSQ2R2_14.2.0/com.ibm.rsar.analysis.codereview.cobol.doc/topics/cac_useresults_junit.html",
@@ -143,6 +155,7 @@ func TestExamplesInTheWild(t *testing.T) {
 					Classname: "TestClassSample",
 					Duration:  342 * time.Millisecond,
 					Status:    StatusFailed,
+					Message:   "XCTAssertTrue failed",
 					Error: Error{
 						Message: "XCTAssertTrue failed",
 						Body:    "\n            ",
