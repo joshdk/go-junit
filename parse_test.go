@@ -10,9 +10,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func TestReparent(t *testing.T) {
@@ -43,9 +40,9 @@ func TestReparent(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			reader := reparentXML(bytes.NewReader(test.input))
 			actual, err := ioutil.ReadAll(reader)
-			assert.NoError(t, err)
+			assertNoError(t, err)
 
-			assert.Equal(t, test.expected, string(actual))
+			assertEqual(t, test.expected, string(actual))
 		})
 	}
 }
@@ -173,9 +170,9 @@ func TestParse(t *testing.T) {
 
 		t.Run(name, func(t *testing.T) {
 			actual, err := parse(bytes.NewReader(test.input))
-			require.Nil(t, err)
+			assertNoError(t, err)
 
-			assert.Equal(t, test.expected, actual)
+			assertEqual(t, test.expected, actual)
 		})
 	}
 }
@@ -267,7 +264,7 @@ func TestExtract(t *testing.T) {
 			actual, err := extractContent(test.input)
 
 			checkError(t, test.err, err)
-			assert.Equal(t, test.expected, actual)
+			assertEqualBytes(t, test.expected, actual)
 		})
 	}
 }
