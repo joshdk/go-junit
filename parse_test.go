@@ -166,6 +166,17 @@ func TestParse(t *testing.T) {
 				},
 			},
 		},
+		{
+			title: "handle encoding",
+			input: []byte(`<?xml version="1.0" encoding="iso-8859-1"?><root/>`),
+			expected: []xmlNode{
+				{
+					XMLName: xml.Name{
+						Local: "root",
+					},
+				},
+			},
+		},
 	}
 
 	for index, test := range tests {

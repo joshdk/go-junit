@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"encoding/xml"
 	"errors"
+	"golang.org/x/net/html/charset"
 	"html"
 	"io"
 )
@@ -107,6 +108,7 @@ func parse(reader io.Reader) ([]xmlNode, error) {
 		root xmlNode
 	)
 
+	dec.CharsetReader = charset.NewReaderLabel
 	if err := dec.Decode(&root); err != nil {
 		return nil, err
 	}
