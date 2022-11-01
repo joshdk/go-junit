@@ -1,0 +1,38 @@
+issues:
+  exclude-use-default: false
+  exclude:
+    # Triggered by long table tests.
+    - Function 'Test\w+' is too long
+
+linters:
+  enable-all: true
+  disable:
+    # Linters that are deprecated.
+    - deadcode
+    - exhaustivestruct
+    - golint
+    - ifshort
+    - interfacer
+    - maligned
+    - nosnakecase
+    - scopelint
+    - structcheck
+    - varcheck
+
+    # Linters that are not used for this project.
+    - exhaustruct
+    - goerr113
+    - lll
+    - paralleltest
+    - testpackage
+    - thelper
+    - wrapcheck
+    - wsl
+
+linters-settings:
+  goheader:
+    template: |-
+      Copyright Josh Komoroske. All rights reserved.
+      Use of this source code is governed by the MIT license,
+      a copy of which can be found in the LICENSE.txt file.
+      SPDX-License-Identifier: MIT

@@ -1,0 +1,28 @@
+name: GolangCI-Lint
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - "master"
+
+jobs:
+  lint:
+    name: GolangCI-Lint
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.12
+
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v2
+        with:
+          # https://github.com/golangci/golangci-lint/releases/tag/v1.50.1
+          version: v1.50.1

@@ -1,6 +1,7 @@
 // Copyright Josh Komoroske. All rights reserved.
 // Use of this source code is governed by the MIT license,
 // a copy of which can be found in the LICENSE.txt file.
+// SPDX-License-Identifier: MIT
 
 package junit
 
@@ -31,6 +32,7 @@ func (n *xmlNode) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	n.Content = content
 
 	n.Attrs = attrMap(start.Attr)
+
 	return nil
 }
 
@@ -43,5 +45,6 @@ func attrMap(attrs []xml.Attr) map[string]string {
 	for _, attr := range attrs {
 		attributes[attr.Name.Local] = attr.Value
 	}
+
 	return attributes
 }

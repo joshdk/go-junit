@@ -1,7 +1,10 @@
 // Copyright Josh Komoroske. All rights reserved.
 // Use of this source code is governed by the MIT license,
 // a copy of which can be found in the LICENSE.txt file.
+// SPDX-License-Identifier: MIT
 
+// Package junit exposes several library functions for the ingestion and
+// parsing of JUnit XML reports.
 package junit
 
 import (
@@ -29,7 +32,6 @@ func IngestDir(directory string) ([]Suite, error) {
 
 		return nil
 	})
-
 	if err != nil {
 		return nil, err
 	}
@@ -40,7 +42,7 @@ func IngestDir(directory string) ([]Suite, error) {
 // IngestFiles will parse the given XML files and return a slice of all
 // contained JUnit test suite definitions.
 func IngestFiles(filenames []string) ([]Suite, error) {
-	var all = make([]Suite, 0)
+	all := make([]Suite, 0)
 
 	for _, filename := range filenames {
 		suites, err := IngestFile(filename)
@@ -56,11 +58,11 @@ func IngestFiles(filenames []string) ([]Suite, error) {
 // IngestFile will parse the given XML file and return a slice of all contained
 // JUnit test suite definitions.
 func IngestFile(filename string) ([]Suite, error) {
-	file, err := os.Open(filename)
+	file, err := os.Open(filename) //nolint:gosec
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
+	defer file.Close() //nolint
 
 	return IngestReader(file)
 }

@@ -1,6 +1,7 @@
 // Copyright Josh Komoroske. All rights reserved.
 // Use of this source code is governed by the MIT license,
 // a copy of which can be found in the LICENSE.txt file.
+// SPDX-License-Identifier: MIT
 
 package junit
 
@@ -38,7 +39,8 @@ const (
 // at the suite level.
 //
 // The following relation should hold true.
-//   Tests == (Passed + Skipped + Failed + Error)
+//
+//	Tests == (Passed + Skipped + Failed + Error)
 type Totals struct {
 	// Tests is the total number of tests run.
 	Tests int `json:"tests" yaml:"tests"`

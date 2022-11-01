@@ -1,6 +1,7 @@
 // Copyright Josh Komoroske. All rights reserved.
 // Use of this source code is governed by the MIT license,
 // a copy of which can be found in the LICENSE.txt file.
+// SPDX-License-Identifier: MIT
 
 package junit
 
@@ -35,21 +36,24 @@ func reparentXML(reader io.Reader) io.Reader {
 // This function deals with two distinct classes of node data; Encoded entities
 // and CDATA tags. These Encoded entities are normal (html escaped) text that
 // you typically find between tags like so:
-//   • "Hello, world!"  →  "Hello, world!"
-//   • "I &lt;/3 XML"   →  "I </3 XML"
+//
+//	"Hello, world!"  →  "Hello, world!"
+//	"I &lt;/3 XML"   →  "I </3 XML"
+//
 // CDATA tags are a special way to embed data that would normally require
 // escaping, without escaping it, like so:
-//   • "<![CDATA[Hello, world!]]>"  →  "Hello, world!"
-//   • "<![CDATA[I &lt;/3 XML]]>"   →  "I &lt;/3 XML"
-//   • "<![CDATA[I </3 XML]]>"      →  "I </3 XML"
+//
+//	"<![CDATA[Hello, world!]]>"  →  "Hello, world!"
+//	"<![CDATA[I &lt;/3 XML]]>"   →  "I &lt;/3 XML"
+//	"<![CDATA[I </3 XML]]>"      →  "I </3 XML"
 //
 // This function specifically allows multiple interleaved instances of either
 // encoded entities or cdata, and will decode them into one piece of normalized
 // text, like so:
-//   • "I &lt;/3 XML <![CDATA[a lot]]>. You probably <![CDATA[</3 XML]]> too."  →  "I </3 XML a lot. You probably </3 XML too."
-//      └─────┬─────┘         └─┬─┘   └──────┬──────┘         └──┬──┘   └─┬─┘
-//      "I </3 XML "            │     ". You probably "          │      " too."
-//                          "a lot"                         "</3 XML"
+//
+//	"I &lt;/3 XML <![CDATA[a lot]]>. You probably <![CDATA[</3 XML]]> too."  →  "I </3 XML a lot. You probably </3 XML too."
+//	 └─────┬─────┘         └─┬─┘   └──────┬──────┘         └──┬──┘   └─┬─┘
+//	"I </3 XML "          "a lot" ". You probably "       "</3 XML" " too."
 //
 // Errors are returned only when there are unmatched CDATA tags, although these
 // should cause proper XML unmarshalling errors first, if encountered in an
@@ -63,7 +67,7 @@ func extractContent(data []byte) ([]byte, error) {
 	)
 
 	for {
-		if mode == 0 {
+		if mode == 0 { //nolint:nestif
 			offset := bytes.Index(data, cdataStart)
 			if offset == -1 {
 				// The string "<![CDATA[" does not appear in the data. Unescape all remaining data and finish
@@ -73,6 +77,7 @@ func extractContent(data []byte) ([]byte, error) {
 				}
 
 				output = append(output, html.UnescapeString(string(data))...)
+
 				break
 			}
 
