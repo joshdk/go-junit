@@ -1,6 +1,7 @@
 // Copyright Josh Komoroske. All rights reserved.
 // Use of this source code is governed by the MIT license,
 // a copy of which can be found in the LICENSE.txt file.
+// SPDX-License-Identifier: MIT
 
 package junit
 
@@ -49,6 +50,7 @@ func ingestSuite(root xmlNode) Suite {
 	}
 
 	suite.Aggregate()
+
 	return suite
 }
 
@@ -106,17 +108,17 @@ func ingestError(root xmlNode) Error {
 	}
 }
 
-func duration(t string) time.Duration {
+func duration(timespec string) time.Duration {
 	// Remove commas for larger durations
-	t = strings.ReplaceAll(t, ",", "")
+	timespec = strings.ReplaceAll(timespec, ",", "")
 
 	// Check if there was a valid decimal value
-	if s, err := strconv.ParseFloat(t, 64); err == nil {
-		return time.Duration(s*1000000) * time.Microsecond
+	if s, err := strconv.ParseFloat(timespec, 64); err == nil {
+		return time.Duration(s * float64(time.Second))
 	}
 
 	// Check if there was a valid duration string
-	if d, err := time.ParseDuration(t); err == nil {
+	if d, err := time.ParseDuration(timespec); err == nil {
 		return d
 	}
 
