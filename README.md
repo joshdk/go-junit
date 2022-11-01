@@ -1,7 +1,8 @@
 [![License][license-badge]][license-link]
-[![Godoc][godoc-badge]][godoc-link]
+[![Actions][github-actions-badge]][github-actions-link]
 [![Go Report Card][go-report-badge]][go-report-link]
-[![CircleCI][circleci-badge]][circleci-link]
+[![Go Dev][godev-badge]][godev-link]
+[![Releases][github-release-badge]][github-release-link]
 
 # Go JUnit
 
@@ -23,32 +24,30 @@ This library has a number of ingestion methods for convenience.
 
 The simplest of which parses raw JUnit XML data.
 
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+    <testsuite name="JUnitXmlReporter.constructor" errors="0" skipped="1" tests="3" failures="1" time="0.006" timestamp="2013-05-24T10:23:58">
+        <properties>
+            <property name="java.vendor" value="Sun Microsystems Inc." />
+            <property name="compiler.debug" value="on" />
+            <property name="project.jdk.classpath" value="jdk.classpath.1.6" />
+        </properties>
+        <testcase classname="JUnitXmlReporter.constructor" name="should default path to an empty string" time="0.006">
+            <failure message="test failure">Assertion failed</failure>
+        </testcase>
+        <testcase classname="JUnitXmlReporter.constructor" name="should default consolidate to true" time="0">
+            <skipped />
+        </testcase>
+        <testcase classname="JUnitXmlReporter.constructor" name="should default useDotNotation to true" time="0" />
+    </testsuite>
+</testsuites>
+```
+
 ```go
-xml := []byte(`
-    <?xml version="1.0" encoding="UTF-8"?>
-    <testsuites>
-        <testsuite name="JUnitXmlReporter" errors="0" tests="0" failures="0" time="0" timestamp="2013-05-24T10:23:58" />
-        <testsuite name="JUnitXmlReporter.constructor" errors="0" skipped="1" tests="3" failures="1" time="0.006" timestamp="2013-05-24T10:23:58">
-            <properties>
-                <property name="java.vendor" value="Sun Microsystems Inc." />
-                <property name="compiler.debug" value="on" />
-                <property name="project.jdk.classpath" value="jdk.classpath.1.6" />
-            </properties>
-            <testcase classname="JUnitXmlReporter.constructor" name="should default path to an empty string" time="0.006">
-                <failure message="test failure">Assertion failed</failure>
-            </testcase>
-            <testcase classname="JUnitXmlReporter.constructor" name="should default consolidate to true" time="0">
-                <skipped />
-            </testcase>
-            <testcase classname="JUnitXmlReporter.constructor" name="should default useDotNotation to true" time="0" />
-        </testsuite>
-    </testsuites>
-`)
+xml := []byte(`<?xml …`)
 
 suites, err := junit.Ingest(xml)
-if err != nil {
-    log.Fatalf("failed to ingest JUnit xml %v", err)
-}
 ```
 
 You can then inspect the contents of the ingested suites.
@@ -59,7 +58,7 @@ for _, suite := range suites {
     for _, test := range suite.Tests {
         fmt.Printf("  %s\n", test.Name)
         if test.Error != nil {
-            fmt.Printf("    %s: %s\n", test.Status, test.Error.Error())
+            fmt.Printf("    %s: %v\n", test.Status, test.Error)
         } else {
             fmt.Printf("    %s\n", test.Status)
         }
@@ -70,7 +69,6 @@ for _, suite := range suites {
 And observe some output like this.
 
 ```
-JUnitXmlReporter
 JUnitXmlReporter.constructor
   should default path to an empty string
     failed: Assertion failed
@@ -86,9 +84,6 @@ Additionally, you can ingest an entire file.
 
 ```go
 suites, err := junit.IngestFile("test-reports/report.xml")
-if err != nil {
-    log.Fatalf("failed to ingest JUnit xml %v", err)
-}
 ```
 
 Or a list of multiple files.
@@ -98,18 +93,12 @@ suites, err := junit.IngestFiles([]string{
     "test-reports/report-1.xml",
     "test-reports/report-2.xml",
 })
-if err != nil {
-    log.Fatalf("failed to ingest JUnit xml %v", err)
-}
 ```
 
 Or any `.xml` files inside of a directory.
 
 ```go
 suites, err := junit.IngestDir("test-reports/")
-if err != nil {
-    log.Fatalf("failed to ingest JUnit xml %v", err)
-}
 ```
 
 ### Data Formats
@@ -161,20 +150,26 @@ Found a bug or want to make go-junit better? Please [open a pull request](https:
 
 To make things easier, try out the following:
 
-- Running `make test` will run the test suite to verify behavior.
+- Running `go test -v` will run the test suite to verify behavior.
 
-- Running `make lint` will format the code, and report any linting issues using [golangci/golangci-lint](https://github.com/golangci/golangci-lint).
+- Running `golangci-lint run` will report any linting issues using [golangci/golangci-lint](https://github.com/golangci/golangci-lint/releases/tag/v1.50.1).
 
 ## License
 
 This code is distributed under the [MIT License][license-link], see [LICENSE.txt][license-file] for more information.
 
-[circleci-badge]:   https://circleci.com/gh/joshdk/go-junit.svg?&style=shield
-[circleci-link]:    https://circleci.com/gh/joshdk/go-junit/tree/master
-[go-report-badge]:  https://goreportcard.com/badge/github.com/joshdk/go-junit
-[go-report-link]:   https://goreportcard.com/report/github.com/joshdk/go-junit
-[godoc-badge]:      https://godoc.org/github.com/joshdk/go-junit?status.svg
-[godoc-link]:       https://godoc.org/github.com/joshdk/go-junit
-[license-badge]:    https://img.shields.io/badge/license-MIT-green.svg
-[license-file]:     https://github.com/joshdk/go-junit/blob/master/LICENSE.txt
-[license-link]:     https://opensource.org/licenses/MIT
+<p align="center">
+  Created by <a href="https://github.com/joshdk">Josh Komoroske</a> ☕
+</p>
+
+[github-actions-badge]:  https://github.com/joshdk/go-junit/workflows/Test/badge.svg?branch=master
+[github-actions-link]:   https://github.com/joshdk/go-junit/actions
+[github-release-badge]:  https://img.shields.io/github/release/joshdk/go-junit/all.svg
+[github-release-link]:   https://github.com/joshdk/go-junit/releases
+[go-report-badge]:       https://goreportcard.com/badge/github.com/joshdk/go-junit
+[go-report-link]:        https://goreportcard.com/report/github.com/joshdk/go-junit
+[godev-badge]:           https://pkg.go.dev/badge/github.com/joshdk/go-junit.svg
+[godev-link]:            https://pkg.go.dev/github.com/joshdk/go-junit
+[license-badge]:         https://img.shields.io/badge/license-MIT-green.svg
+[license-file]:          https://github.com/joshdk/go-junit/blob/master/LICENSE.txt
+[license-link]:          https://opensource.org/licenses/MIT
