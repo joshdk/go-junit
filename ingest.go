@@ -30,6 +30,12 @@ func ingestSuite(root xmlNode) Suite {
 		Package:    root.Attr("package"),
 		Properties: root.Attrs,
 	}
+	if root.Attr("timestamp") != "" {
+		const layout = "2006-01-02T15:04:05"
+		if timestamp, err := time.Parse(layout, root.Attr("timestamp")); err == nil {
+			suite.Timestamp = timestamp
+		}
+	}
 
 	for _, node := range root.Nodes {
 		switch node.XMLName.Local {

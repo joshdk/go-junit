@@ -27,6 +27,9 @@ func TestExamplesInTheWild(t *testing.T) {
 				assertLen(t, suites[0].Tests, 0)
 				assertLen(t, suites[1].Tests, 3)
 				assertError(t, suites[1].Tests[0].Error, "Assertion failed")
+
+				suite := suites[1]
+				assertEqual(t, false, suite.Timestamp.IsZero())
 			},
 		},
 		{
@@ -40,6 +43,9 @@ func TestExamplesInTheWild(t *testing.T) {
 				assertEqual(t, "STDERR text", suites[0].SystemErr)
 				assertEqual(t, "STDOUT text", suites[0].Tests[0].SystemOut)
 				assertEqual(t, "STDERR text", suites[0].Tests[0].SystemErr)
+
+				suite := suites[0]
+				assertEqual(t, true, suite.Timestamp.IsZero())
 			},
 		},
 		{
