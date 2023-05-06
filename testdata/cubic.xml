@@ -66,7 +66,14 @@
 	       type=""
 	       ></failure>
 
-      <!-- Data that was written to standard out while the test was executed. optional -->
+      <!-- Properties (e.g., environment settings) set during test
+       execution. The properties element can appear 0 or once. -->
+      <properties>
+	    <!-- property can appear multiple times. The name and value attributres are required. -->
+        <property name="" value=""/>
+      </properties>
+
+	  <!-- Data that was written to standard out while the test was executed. optional -->
       <system-out>STDOUT text</system-out>
 
       <!-- Data that was written to standard error while the test was executed. optional -->

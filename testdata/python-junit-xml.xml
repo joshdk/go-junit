@@ -2,6 +2,9 @@
 <testsuites>
     <testsuite errors="0" failures="0" name="my test suite" tests="1">
         <testcase classname="some.class.name" name="Test1" time="123.345000">
+            <properties>
+                <property name="some.property.name" value="some.property.value"/>
+            </properties>
             <system-out>
                 I am stdout!
             </system-out>

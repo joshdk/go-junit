@@ -107,6 +107,8 @@ func TestExamplesInTheWild(t *testing.T) {
 				assertLen(t, suites[0].Tests, 1)
 				assertEqual(t, "\n                I am stdout!\n            ", suites[0].Tests[0].SystemOut)
 				assertEqual(t, "\n                I am stderr!\n            ", suites[0].Tests[0].SystemErr)
+				assertEqual(t, "some.property.value", suites[0].Tests[0].Properties["some.property.name"])
+				assertEqual(t, "some.class.name", suites[0].Tests[0].Properties["classname"])
 			},
 		},
 		{
